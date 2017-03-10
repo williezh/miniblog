@@ -35,10 +35,26 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'userena', 
+    'guardian',
+    'easy_thumbnails',
+    'accounts',
     'blog',
     'markdown2',
     'pygments',
 ]
+
+#AUTH_USER_MODEL = 'blog.UserProfile'
+# user profile
+# http://django-userena.readthedocs.io/en/latest/installation.html
+AUTHENTICATION_BACKENDS = (
+    'userena.backends.UserenaAuthenticationBackend',
+    'guardian.backends.ObjectPermissionBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+ANONYMOUS_USER_ID = -1
+AUTH_PROFILE_MODULE = 'accounts.MyProfile'
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
@@ -49,6 +65,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'userena.middleware.UserenaLocaleMiddleware',
 ]
 
 ROOT_URLCONF = 'miniblog.urls'
@@ -81,6 +98,27 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+if 1:
+    from .local_settings import email_conf,qiniu_conf,DATABASES as local_db
+#    DATABASES = local_db    
+    
+# qiniu settigs for upload used by 'qiniuyun.QiniuPush'
+# https://github.com/qiniu/python-sdk
+    
+    QINIU_CONF=qiniu_conf
+#  ---------------------------------------------------------    
+#  Email ,ref:http://www.cnblogs.com/BeginMan/p/3443158.html
+    EMAIL_BACKEND = email_conf["EMAIL_BACKEND"]
+ 
+    EMAIL_USE_TLS = email_conf["EMAIL_USE_TLS"]
+    EMAIL_HOST = email_conf["EMAIL_HOST"]
+    EMAIL_PORT = email_conf["EMAIL_PORT"]
+    EMAIL_HOST_USER = email_conf["EMAIL_HOST_USER"]
+    EMAIL_HOST_PASSWORD = email_conf["EMAIL_HOST_PASSWORD"]
+    DEFAULT_FROM_EMAIL = email_conf["DEFAULT_FROM_EMAIL"]
+#  ---------------------------------------------------------
+
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators

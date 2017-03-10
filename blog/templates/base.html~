@@ -25,7 +25,7 @@
             <li><a href="">                         </a></li>
         </ul>
         <ul id="header-nav">
-            <li><a href="{% url 'blog:signup' %}">注册</a></li>
+            <li><a href="{% url 'blog:register' %}">注册</a></li>
         </ul>
         <div id="header-right" class="login">
             <div id="user-info">                
